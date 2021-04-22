@@ -1,0 +1,39 @@
+*{
+    margin:0;
+    padding: 0;
+}
+.container{
+    display:flex;
+    flex-direction:column;
+    margin: 50px;
+}
+    .header{
+        display:flex;
+        flex-direction:row;
+        justify-content: space-between;
+        margin-bottom:50px;
+    }
+    .form{
+        display:flex;
+        flex-direction:column;
+    }
+    .comment_container{
+        margin-left:40px;
+    }
+    .comment_container form{
+        margin-top:10px;
+        width:50%;
+    }
+    .message_header{
+        font-weight: bold;
+    }
+    .thread{
+        margin-top:30px;
+    }
+    .comment{
+        margin-top:10px;
+    }
+
+    button{
+        width:100px;
+    }

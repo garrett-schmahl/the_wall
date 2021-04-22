@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wall</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main_app/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Coding Dojo Wall</h1>
+            <p>Welcome {{ user.first_name }}</p>
+            <a href="/user/logout">Log off</a>
+        </div>
+        <form action="/thewall/thread/create" method="POST" class="form">
+           {% csrf_token %}
+           <label for="thread_post_box">Create a Thread</label>
+           <textarea id="thread_post_box" name="thread_post_box"></textarea>
+           <button type="submit">Create</button>
+        </form>
+        {% for thread in board_threads %}      
+        <div class="thread">
+            <div>
+                <p class="message_header">{{ thread.user.first_name }} {{ thread.user.last_name }}- {{ thread.created_at }} {% if thread.user.id == request.session.uuid %}<a href="/thewall/thread/{{ thread.id }}/delete">delete</a>{% endif %}</p>
+                <p>{{ thread.content }}</p>
+            </div>
+            <div class="comment_container">
+                {% for comment in thread.thread_comments.all %}
+                <div class="comment">
+                    <p class="message_header">{{ comment.user.first_name }} {{ comment.user.last_name }} - {{ comment.created_at }} {% if comment.user.id == request.session.uuid %}<a href="/thewall/comment/{{ comment.id }}/delete">delete</a>{% endif %}</p>
+                    <p>{{ comment.content }}</p>
+                </div>
+                {% endfor %}
+                <form action="/thewall/comment/create" method="POST" class="form">
+                    {% csrf_token %}
+                    <input type="hidden" value={{ thread.id }} name="thread_id">
+                    <label for="comment_post_box">Post a Comment</label>
+                    <textarea id="comment_post_box" name="comment_post_box"></textarea>
+                    <button type="submit">Comment</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
