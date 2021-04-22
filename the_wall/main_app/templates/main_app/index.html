@@ -21,7 +21,7 @@
            <textarea id="thread_post_box" name="thread_post_box"></textarea>
            <button type="submit">Create</button>
         </form>
-        {% for thread in board_threads %}      
+        {% for thread in board_threads reversed %}      
         <div class="thread">
             <div>
                 <p class="message_header">{{ thread.user.first_name }} {{ thread.user.last_name }}- {{ thread.created_at }} {% if thread.user.id == request.session.uuid %}<a href="/thewall/thread/{{ thread.id }}/delete">delete</a>{% endif %}</p>

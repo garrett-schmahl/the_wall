@@ -17,7 +17,16 @@ class User_Manager(models.Manager):
 
         if len(user_list) > 0:
             errors['email'] = "Email is already in use."
-        
+
+        EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+
+        if not EMAIL_REGEX.match(post_data['email']):          
+            errors['email'] = "Invalid email address!"
+        else:
+            user_list = User.objects.filter(email = post_data['email_input'])
+            if len(user_list) > 0:
+                errors['email'] = "Email is already in use."
+
         if len(post_data['password_input']) < 4:
             errors['password'] = "Password must be at least 4 characters."
         if post_data['password_input'] != post_data['password_check']:
@@ -30,7 +39,7 @@ class User_Manager(models.Manager):
             if datetime.now() < form_date:
                 errors["date"] = "Are you a terminator?"
             elif datetime.now().year - form_date.year < 13:
-                errors["date"] = "You must be at least 13. Set year to 2007 to proceed ;D"
+                errors["date"] = "You must be at least 13. Set year to 2007 to proceed. Promise not to lie."
         return errors
 
 
